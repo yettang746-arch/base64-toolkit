@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 编解码工具 - 免费在线转换器</title>
+    <meta name="description" content="免费在线 Base64 编解码工具，支持文本和图片转换，快速、安全、无需注册">
+    <meta name="keywords" content="base64,base64编码,base64解码,base64图片,在线转换器,免费工具">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .tab-active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+        textarea {
+            resize: vertical;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Top Ad Banner -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="text-center bg-gray-200 py-4 rounded">
+            <!-- Google AdSense Top Banner -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="horizontal"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">🔧 Base64 编解码工具</h1>
+            <p class="text-gray-600">免费在线 Base64 编解码，支持文本和图片转换</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="flex border-b mb-6 bg-white rounded-t-lg">
+            <button onclick="switchTab('text')" id="tab-text" class="flex-1 py-3 px-4 text-center font-medium tab-active">
+                📝 文本转换
+            </button>
+            <button onclick="switchTab('image')" id="tab-image" class="flex-1 py-3 px-4 text-center font-medium text-gray-500 hover:text-gray-700">
+                🖼️ 图片转 Base64
+            </button>
+        </div>
+
+        <!-- Text Tab Content -->
+        <div id="content-text" class="bg-white rounded-b-lg p-6 shadow">
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">输入内容</label>
+                <textarea id="input-text" class="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="在此输入要编码或解码的文本..."></textarea>
+            </div>
+
+            <div class="flex justify-center gap-4 mb-6">
+                <button onclick="encode()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium">
+                    ⬇️ 编码
+                </button>
+                <button onclick="decode()" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium">
+                    ⬆️ 解码
+                </button>
+                <button onclick="copyText()" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-medium">
+                    📋 复制
+                </button>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">输出结果</label>
+                <textarea id="output-text" class="w-full h-32 p-3 border border-gray-300 rounded-lg bg-gray-50" readonly placeholder="结果显示在这里..."></textarea>
+            </div>
+        </div>
+
+        <!-- Image Tab Content -->
+        <div id="content-image" class="bg-white rounded-b-lg p-6 shadow hidden">
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">上传图片</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition cursor-pointer" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept="image/*" onchange="handleImage(event)" class="hidden">
+                    <div class="text-gray-500">
+                        <div class="text-4xl mb-2">📁</div>
+                        <p>点击上传或拖拽图片到这里</p>
+                        <p class="text-sm mt-1">支持 JPG, PNG, GIF, WebP</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="image-preview" class="mb-6 hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-2">预览</label>
+                <img id="preview-img" class="max-w-full h-auto border rounded-lg max-h-64">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Base64 结果</label>
+                <textarea id="output-image" class="w-full h-32 p-3 border border-gray-300 rounded-lg bg-gray-50 text-xs font-mono" readonly placeholder="Base64 结果将显示在这里..."></textarea>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="copyImage()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium">
+                    📋 复制 Base64
+                </button>
+                <button onclick="downloadImage()" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium">
+                    💾 下载图片
+                </button>
+                <button onclick="clearImage()" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-medium">
+                    🗑️ 清除
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mt-12 grid md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+                <div class="text-3xl mb-3">⚡</div>
+                <h3 class="font-bold text-gray-800 mb-2">快速转换</h3>
+                <p class="text-gray-600 text-sm">纯前端处理，无需上传服务器，保护隐私</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+                <div class="text-3xl mb-3">🔒</div>
+                <h3 class="font-bold text-gray-800 mb-2">安全可靠</h3>
+                <p class="text-gray-600 text-sm">所有转换在浏览器本地完成，数据不存储</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+                <div class="text-3xl mb-3">🆓</div>
+                <h3 class="font-bold text-gray-800 mb-2">完全免费</h3>
+                <p class="text-gray-600 text-sm">无限制使用，无需注册，永久免费</p>
+            </div>
+        </div>
+
+        <!-- Bottom Ad Banner -->
+        <div class="mt-12 mb-8">
+            <div class="text-center bg-gray-200 py-4 rounded">
+                <!-- Google AdSense Bottom Banner -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>© 2025 Base64 工具箱 | 免费在线工具</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchTab(tab) {
+            document.getElementById('tab-text').className = tab === 'text' ?
+                'flex-1 py-3 px-4 text-center font-medium tab-active' :
+                'flex-1 py-3 px-4 text-center font-medium text-gray-500 hover:text-gray-700';
+            document.getElementById('tab-image').className = tab === 'image' ?
+                'flex-1 py-3 px-4 text-center font-medium tab-active' :
+                'flex-1 py-3 px-4 text-center font-medium text-gray-500 hover:text-gray-700';
+
+            document.getElementById('content-text').className = tab === 'text' ?
+                'bg-white rounded-b-lg p-6 shadow' :
+                'bg-white rounded-b-lg p-6 shadow hidden';
+            document.getElementById('content-image').className = tab === 'image' ?
+                'bg-white rounded-b-lg p-6 shadow' :
+                'bg-white rounded-b-lg p-6 shadow hidden';
+        }
+
+        // Base64 Encode
+        function encode() {
+            const input = document.getElementById('input-text').value;
+            if (!input) {
+                alert('请输入要编码的内容');
+                return;
+            }
+            try {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                document.getElementById('output-text').value = encoded;
+            } catch (e) {
+                alert('编码失败: ' + e.message);
+            }
+        }
+
+        // Base64 Decode
+        function decode() {
+            const input = document.getElementById('input-text').value;
+            if (!input) {
+                alert('请输入要解码的内容');
+                return;
+            }
+            try {
+                const decoded = decodeURIComponent(escape(atob(input)));
+                document.getElementById('output-text').value = decoded;
+            } catch (e) {
+                alert('解码失败: 请输入有效的 Base64 字符串');
+            }
+        }
+
+        // Copy text
+        function copyText() {
+            const output = document.getElementById('output-text').value;
+            if (!output) {
+                alert('没有内容可复制');
+                return;
+            }
+            navigator.clipboard.writeText(output).then(() => {
+                alert('已复制到剪贴板！');
+            });
+        }
+
+        // Handle image upload
+        function handleImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('请上传图片文件');
+                return;
+            }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result;
+                document.getElementById('output-image').value = base64;
+                document.getElementById('preview-img').src = base64;
+                document.getElementById('image-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Copy image Base64
+        function copyImage() {
+            const output = document.getElementById('output-image').value;
+            if (!output) {
+                alert('没有内容可复制');
+                return;
+            }
+            navigator.clipboard.writeText(output).then(() => {
+                alert('Base64 已复制到剪贴板！');
+            });
+        }
+
+        // Download image
+        function downloadImage() {
+            const dataUrl = document.getElementById('output-image').value;
+            if (!dataUrl) {
+                alert('没有图片可下载');
+                return;
+            }
+            const link = document.createElement('a');
+            link.download = 'image.png';
+            link.href = dataUrl;
+            link.click();
+        }
+
+        // Clear image
+        function clearImage() {
+            document.getElementById('file-input').value = '';
+            document.getElementById('output-image').value = '';
+            document.getElementById('preview-img').src = '';
+            document.getElementById('image-preview').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
